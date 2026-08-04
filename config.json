@@ -1,0 +1,74 @@
+{
+  "business_name": "GRAIN Furniture Co.",
+  "tagline": "Solid wood furniture, built to outlast you",
+  "phone": "+60 12-345 6789",
+  "email": "hello@grainfurniture.com",
+  "address": "12 Jalan Kayu, Johor Bahru, Johor",
+  "hours": "Mon-Sat: 10am-7pm, Sun: 11am-5pm",
+  "colors": {
+    "bg": "#EDE6D8",
+    "surface": "#FAF7F2",
+    "ink": "#2B1D14",
+    "ink_soft": "#5C4A3A",
+    "accent": "#3B4F3A",
+    "accent_warm": "#A67C3D",
+    "line": "#D8CDBA"
+  },
+  "products": [
+    {
+      "id": "p1",
+      "name": "Amara Dining Table",
+      "category": "Dining",
+      "price": "RM 2,450",
+      "material": "Solid oak, hand-oiled finish",
+      "dimensions": "180 x 90 x 75 cm",
+      "desc": "Seats six. Built from a single grain run so the top ages as one piece, not a patchwork."
+    },
+    {
+      "id": "p2",
+      "name": "Solen Lounge Chair",
+      "category": "Living",
+      "price": "RM 980",
+      "material": "Walnut frame, wool upholstery",
+      "dimensions": "72 x 80 x 85 cm",
+      "desc": "A reading chair with a slight recline, upholstered in a weave that softens with use."
+    },
+    {
+      "id": "p3",
+      "name": "Kessel Storage Bench",
+      "category": "Living",
+      "price": "RM 720",
+      "material": "Solid ash, brass hardware",
+      "dimensions": "120 x 40 x 45 cm",
+      "desc": "Entryway seating with hidden storage underneath. Hinges rated for 20,000+ cycles."
+    },
+    {
+      "id": "p4",
+      "name": "Marlow Bed Frame",
+      "category": "Bedroom",
+      "price": "RM 1,850",
+      "material": "Solid teak",
+      "dimensions": "Queen, 160 x 200 cm",
+      "desc": "No slats to replace, no squeaks to chase down. One frame, joined the old way."
+    },
+    {
+      "id": "p5",
+      "name": "Fen Bookshelf",
+      "category": "Storage",
+      "price": "RM 1,150",
+      "material": "Solid oak",
+      "dimensions": "90 x 35 x 190 cm",
+      "desc": "Five adjustable shelves rated to hold a genuinely full library, not a decorative one."
+    },
+    {
+      "id": "p6",
+      "name": "Reyes Coffee Table",
+      "category": "Living",
+      "price": "RM 640",
+      "material": "Solid walnut",
+      "dimensions": "110 x 55 x 40 cm",
+      "desc": "Live-edge detail on one side, straight edge on the other. No two are identical."
+    }
+  ],
+  "system_prompt": "You are the shopping assistant for {business_name}, a solid-wood furniture store. You are warm, knowledgeable, and a little understated -- like a good salesperson on the floor, not a pushy one. Use the product catalog below to answer questions accurately. Recommend specific products by name when relevant. Ask a clarifying question (room size, style, budget) before recommending if the customer's need is vague. Never invent products, prices, or dimensions that aren't in the catalog. If asked something you don't know (like exact stock levels), say you'll have a team member confirm it. Keep responses conversational and short -- 2-4 sentences unless the customer asks for detail. Store info: {address}, {hours}, {phone}. Product catalog: {products}"
+}

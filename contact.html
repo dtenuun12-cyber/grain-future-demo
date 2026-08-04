@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — GRAIN Furniture Co.</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-mark">GRAIN</a>
+  <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html">Products</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+  </ul>
+</nav>
+
+<header class="hero" style="padding-bottom: 40px;">
+  <div class="hero-eyebrow">Get in touch</div>
+  <h1 style="font-size: clamp(34px, 5vw, 56px);">Visit the workshop, or ask us anything.</h1>
+  <p class="hero-sub">For quick questions, the assistant in the corner can usually answer faster than an email.</p>
+</header>
+
+<section style="padding-top: 0;">
+  <div class="wrap contact-grid">
+    <div>
+      <div class="info-row">
+        <span class="info-label">Address</span>
+        <span class="info-value">12 Jalan Kayu, Johor Bahru, Johor</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Phone</span>
+        <span class="info-value">+60 12-345 6789</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Email</span>
+        <span class="info-value">hello@grainfurniture.com</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Hours</span>
+        <span class="info-value">Mon–Sat: 10am–7pm · Sun: 11am–5pm</span>
+      </div>
+    </div>
+
+    <form id="contact-form">
+      <div>
+        <label for="name">Name</label>
+        <input type="text" id="name" required>
+      </div>
+      <div>
+        <label for="email">Email</label>
+        <input type="email" id="email" required>
+      </div>
+      <div>
+        <label for="message">Message</label>
+        <textarea id="message" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Send message</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-row">
+    <span>&copy; 2026 GRAIN Furniture Co.</span>
+    <span>12 Jalan Kayu, Johor Bahru</span>
+    <span>Mon–Sat 10am–7pm</span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script src="chatbot.js"></script>
+</body>
+</html>

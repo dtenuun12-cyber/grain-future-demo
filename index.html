@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GRAIN Furniture Co. — Solid wood furniture, built to outlast you</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-mark">GRAIN</a>
+  <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="products.html">Products</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<header class="hero">
+  <svg class="grain-motif" width="260" height="260" viewBox="0 0 260 260" style="top:-40px; right:-60px;">
+    <circle cx="130" cy="130" r="30" fill="none" stroke="#A67C3D" stroke-width="1"/>
+    <circle cx="130" cy="130" r="55" fill="none" stroke="#A67C3D" stroke-width="1"/>
+    <circle cx="130" cy="130" r="82" fill="none" stroke="#3B4F3A" stroke-width="1"/>
+    <circle cx="130" cy="130" r="112" fill="none" stroke="#A67C3D" stroke-width="1"/>
+    <circle cx="130" cy="130" r="128" fill="none" stroke="#3B4F3A" stroke-width="0.75"/>
+  </svg>
+  <div class="hero-eyebrow">Furniture, made from whole trees — Johor Bahru</div>
+  <h1>Furniture that gets <em>better</em> with the years you give it.</h1>
+  <p class="hero-sub">Every piece is solid wood, joined the way furniture used to be joined — no veneer, no particleboard, nothing that falls apart when you move house.</p>
+  <div class="hero-actions">
+    <a href="products.html" class="btn btn-primary">View the collection</a>
+    <a href="about.html" class="btn btn-secondary">How we build</a>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="section-eyebrow">Featured</span>
+        <h2>A few pieces to start with</h2>
+      </div>
+      <p>Have a question about a piece before you decide? The assistant in the corner knows the full catalog.</p>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div class="card-media">Amara Dining Table</div>
+        <span class="card-cat">Dining</span>
+        <h3>Amara Dining Table</h3>
+        <p class="desc">Seats six. Built from a single grain run so the top ages as one piece, not a patchwork.</p>
+        <div class="card-specs">
+          <span>Solid oak, hand-oiled finish</span>
+          <span>180 x 90 x 75 cm</span>
+        </div>
+        <div class="card-price">RM 2,450</div>
+        <button class="card-ask" onclick="document.getElementById('grain-chat-launcher').click()">Ask about this piece &rarr;</button>
+      </div>
+      <div class="card">
+        <div class="card-media">Solen Lounge Chair</div>
+        <span class="card-cat">Living</span>
+        <h3>Solen Lounge Chair</h3>
+        <p class="desc">A reading chair with a slight recline, upholstered in a weave that softens with use.</p>
+        <div class="card-specs">
+          <span>Walnut frame, wool upholstery</span>
+          <span>72 x 80 x 85 cm</span>
+        </div>
+        <div class="card-price">RM 980</div>
+        <button class="card-ask" onclick="document.getElementById('grain-chat-launcher').click()">Ask about this piece &rarr;</button>
+      </div>
+      <div class="card">
+        <div class="card-media">Marlow Bed Frame</div>
+        <span class="card-cat">Bedroom</span>
+        <h3>Marlow Bed Frame</h3>
+        <p class="desc">No slats to replace, no squeaks to chase down. One frame, joined the old way.</p>
+        <div class="card-specs">
+          <span>Solid teak</span>
+          <span>Queen, 160 x 200 cm</span>
+        </div>
+        <div class="card-price">RM 1,850</div>
+        <button class="card-ask" onclick="document.getElementById('grain-chat-launcher').click()">Ask about this piece &rarr;</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="section-eyebrow">Process</span>
+        <h2>From tree to table</h2>
+      </div>
+    </div>
+    <div class="process">
+      <div class="step">
+        <span class="step-num">01</span>
+        <h4>Selecting the timber</h4>
+        <p>We choose boards for grain and stability, not just for how they look on day one.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <h4>Air drying</h4>
+        <p>Slow drying over months, not kiln-forced in days — it's why our pieces don't warp.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <h4>Joinery</h4>
+        <p>Mortise and tenon, dovetails where it counts. Screws only where they're actually right.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">04</span>
+        <h4>Finishing</h4>
+        <p>Hand-oiled, not lacquered — so the wood can be refreshed for decades, not replaced.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap" style="text-align:center;">
+    <h2 style="font-family: var(--font-display); font-weight:500; font-size: clamp(24px,3vw,36px); max-width:560px; margin:0 auto 24px;">Not sure what fits your space? Ask the assistant — it knows every dimension in the store.</h2>
+    <button class="btn btn-primary" onclick="document.getElementById('grain-chat-launcher').click()">Start a conversation</button>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-row">
+    <span>&copy; 2026 GRAIN Furniture Co.</span>
+    <span>12 Jalan Kayu, Johor Bahru</span>
+    <span>Mon–Sat 10am–7pm</span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script src="chatbot.js"></script>
+</body>
+</html>
