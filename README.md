@@ -74,18 +74,53 @@ brain reads from).
 
 Push the changes to GitHub — Vercel redeploys automatically within a minute.
 
+## Step 5 — Turn on lead capture (this is how the store actually gets sales)
+
+This template doesn't do online checkout — for furniture, that's normal.
+Customers browse and ask questions, then the store closes the sale by phone
+or WhatsApp. Three lead channels are already built in; you just need to
+connect two of them to real accounts:
+
+**A. WhatsApp button (works immediately, no setup)**
+Open `script.js` and change:
+```
+const WHATSAPP_NUMBER = '60123456789';
+```
+to the store's real number, digits only, with country code, no `+` or spaces
+(e.g. Malaysian number `012-345 6789` becomes `60123456789`). That's it —
+the floating WhatsApp button on every page now opens a chat with that number.
+
+**B. Contact form + chatbot "Request a callback" (needs a free Formspree account)**
+1. Go to https://formspree.io and sign up free (no card).
+2. Create a new form, copy the endpoint URL it gives you (looks like
+   `https://formspree.io/f/abcd1234`).
+3. Open `script.js` and paste it in place of:
+   ```
+   const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+   ```
+4. Push to GitHub — Vercel redeploys automatically.
+
+Once that's set, both the contact page form AND the "Request a callback"
+button inside the chatbot will email the store owner directly whenever
+someone leaves their details. Formspree's free tier covers 50
+submissions/month — plenty for a small store getting started.
+
 ## Reusing this for client #2, #3...
 
-Copy this whole folder, create a new GitHub repo, repeat Steps 2–4 with their
-info. The code never changes — only `config.json` and the HTML content do.
-This is your reusable template.
+Copy this whole folder, create a new GitHub repo, repeat Steps 2–5 with their
+info. The code never changes — only `config.json`, `script.js`'s two
+constants, and the HTML content do. This is your reusable template.
 
 ## Notes
 
-- The contact form currently just shows a confirmation message — it doesn't
-  send real emails yet. Wiring it to send email (e.g. via a free service like
-  Formspree) is a quick follow-up if you want that working.
+- No online payment is set up — the model here is "capture the lead, owner
+  closes the sale by call/WhatsApp," which fits how furniture actually sells.
+  If a future client wants real online checkout (e.g. for smaller items or
+  deposits), that's a separate build — ask me when you're there and I'll
+  walk you through it (Stripe or a local gateway like Billplz/ToyyibPay for
+  Malaysian businesses).
 - The chatbot keeps the last 10 messages of context per conversation and
-  costs a small fraction of a cent per exchange on Claude's API.
+  costs nothing on Groq's free tier, or a small fraction of a cent per
+  exchange if you later switch to Claude.
 - Product images are currently placeholder blocks with the product name —
   swap in real photos by replacing `.card-media` divs with `<img>` tags.
