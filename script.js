@@ -100,13 +100,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Reusable card renderer with WhatsApp context links
+// Reusable card renderer with WhatsApp context links including current URL
 function renderProductCards(products, selector) {
   const container = document.querySelector(selector);
   if (!container) return;
 
   container.innerHTML = products.map(product => {
-    const waText = encodeURIComponent(`Hi GRAIN, I'm interested in the ${product.name} (${product.price}). Is it available to view or customize?`);
+    const pageUrl = window.location.href;
+    const waText = encodeURIComponent(`Hi GRAIN, I'm interested in the ${product.name} (${product.price}). Here is the link: ${pageUrl}. Is it available to view or customize?`);
     const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`;
 
     return `
