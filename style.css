@@ -403,6 +403,27 @@ footer {
   color: var(--ink-soft);
 }
 
+/* ---------- WhatsApp button ---------- */
+#grain-whatsapp-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 96px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #3B4F3A;
+  color: #FAF7F2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(43,29,20,0.25);
+  z-index: 998;
+  transition: transform 0.2s ease;
+}
+#grain-whatsapp-btn:hover { transform: scale(1.06); }
+
 /* ---------- Chatbot widget ---------- */
 #grain-chat-launcher {
   position: fixed;
@@ -489,6 +510,22 @@ footer {
 
 .gc-msg.typing { color: var(--ink-soft); font-style: italic; }
 
+.gc-lead-bar {
+  padding: 6px 16px;
+  border-top: 1px solid var(--line);
+}
+
+.gc-lead-link {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 0;
+}
+.gc-lead-link:hover { text-decoration: underline; }
+
 .gc-input-row {
   display: flex;
   border-top: 1px solid var(--line);
@@ -544,4 +581,5 @@ footer {
   .process { grid-template-columns: 1fr; }
   #grain-chat-panel { right: 20px; width: calc(100vw - 40px); }
   #grain-chat-launcher { right: 20px; }
+  #grain-whatsapp-btn { right: 88px; }
 }
