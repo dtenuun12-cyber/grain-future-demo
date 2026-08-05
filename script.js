@@ -1,9 +1,9 @@
 // GRAIN Furniture Co. — shared site behavior
-const WHATSAPP_NUMBER = '601140294053'; // Malaysian number
+const WHATSAPP_NUMBER = '601140294053'; 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Mobile Nav Toggle
+  // ---- Mobile Nav Toggle ----
   const toggle = document.querySelector('.nav-toggle');
   const links = document.querySelector('.nav-links');
   if (toggle && links) {
@@ -12,22 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Floating Action Container (WhatsApp + Chatbot toggle)
-  const floatContainer = document.createElement('div');
-  floatContainer.className = 'floating-actions';
-
-  const wa = document.createElement('a');
-  wa.id = 'grain-whatsapp-btn';
-  wa.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi! I'm interested in a piece from GRAIN Furniture Co.")}`;
-  wa.target = '_blank';
-  wa.rel = 'noopener';
-  wa.setAttribute('aria-label', 'Chat on WhatsApp');
-  wa.innerHTML = '&#128241;';
-
-  floatContainer.appendChild(wa);
-  document.body.appendChild(floatContainer);
-
-  // Contact form handler
+  // ---- Contact Form Submission ----
   const form = document.querySelector('#contact-form');
   if (form) {
     form.addEventListener('submit', async (e) => {
