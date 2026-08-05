@@ -1,9 +1,10 @@
 /* ---------- Base & Variables ---------- */
 :root {
-  --bg: #F9F8F6;
-  --surface: #FFFFFF;
-  --ink: #1C1917;
-  --line: #E7E5E4;
+  --bg: #F3EFE6;         /* Rich warm linen beige */
+  --surface: #E9E2D0;    /* Warm sand tone for section contrast */
+  --ink: #1C1917;        /* Dark charcoal text */
+  --line: #D4CCB8;       /* Subtle warm border line */
+  --accent: #A67C3D;     /* Warm timber bronze tone for accents & numbers */
   --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-display: "Georgia", serif;
 }
@@ -119,7 +120,7 @@ section {
 .grain-motif { 
   position: absolute; 
   z-index: -1; 
-  opacity: 0.2; 
+  opacity: 0.3; 
 }
 
 /* ---------- Buttons ---------- */
@@ -134,7 +135,7 @@ section {
 
 .btn-primary { 
   background: var(--ink); 
-  color: var(--surface); 
+  color: #FAF8F5; 
   border: 1px solid var(--ink); 
 }
 
@@ -264,12 +265,14 @@ section {
   gap: 32px; 
 }
 
+/* FIXED: Numbers updated to wood-bronze accent color for sharp visibility */
 .step-num { 
   font-family: var(--font-display); 
-  font-size: 2rem; 
-  color: var(--line); 
+  font-size: 2.2rem; 
+  font-weight: 600;
+  color: var(--accent); 
   display: block; 
-  margin-bottom: 16px; 
+  margin-bottom: 12px; 
 }
 
 .step h4 { 
@@ -341,7 +344,7 @@ section {
   border-radius: 4px; 
   font-family: inherit; 
   font-size: 1rem; 
-  background: var(--surface); 
+  background: #FAF8F5; 
 }
 
 #contact-form textarea { 
@@ -380,7 +383,7 @@ footer {
   height: 56px; 
   border-radius: 50%; 
   background: var(--ink); 
-  color: var(--surface); 
+  color: #FAF8F5; 
   border: none; 
   font-size: 24px; 
   cursor: pointer; 
@@ -407,7 +410,7 @@ footer {
   width: 360px; 
   max-height: 600px; 
   height: calc(100vh - 120px); 
-  background: var(--surface); 
+  background: #FAF8F5; 
   border: 1px solid var(--line); 
   border-radius: 12px; 
   box-shadow: 0 8px 32px rgba(0,0,0,0.1); 
@@ -491,7 +494,7 @@ footer {
 
 .gc-msg.user { 
   background: var(--ink); 
-  color: var(--surface); 
+  color: #FAF8F5; 
   align-self: flex-end; 
   border-bottom-right-radius: 4px; 
 }
@@ -531,6 +534,7 @@ footer {
   outline: none; 
   font-family: inherit; 
   font-size: 0.95rem; 
+  background: #FAF8F5;
 }
 
 #gc-input:focus { 
@@ -539,7 +543,7 @@ footer {
 
 .gc-send { 
   background: var(--ink); 
-  color: var(--surface); 
+  color: #FAF8F5; 
   border: none; 
   padding: 0 16px; 
   border-radius: 20px; 
@@ -564,7 +568,6 @@ footer {
   transform: translateY(0); 
 }
 
-/* Stagger grid items to fade in one by one */
 .grid .card:nth-child(1) { transition-delay: 0.0s; }
 .grid .card:nth-child(2) { transition-delay: 0.1s; }
 .grid .card:nth-child(3) { transition-delay: 0.2s; }
@@ -584,7 +587,7 @@ footer {
     top: 100%; 
     left: 0; 
     width: 100%; 
-    background: var(--surface); 
+    background: var(--bg); 
     flex-direction: column; 
     padding: 20px 5%; 
     border-bottom: 1px solid var(--line); 
