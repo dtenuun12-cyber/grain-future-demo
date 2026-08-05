@@ -1,49 +1,42 @@
 // Vercel serverless function — handles POST /api/chat
-//
-// Uses Groq's API — it's free (no credit card required) and OpenAI-compatible,
-// which is why this is a good $0 way to get the demo working first.
-// Groq only hosts open-source models (Llama, etc), not Claude — so quality is
-// a notch below Claude, but plenty good enough to prove the concept to a client.
-//
-// To switch to Claude later (e.g. once a client is paying you), see the
-// commented-out block at the bottom of this file.
-//
-// Deploy on Vercel and set an environment variable named GROQ_API_KEY
-// (Project Settings -> Environment Variables -> add GROQ_API_KEY = your key)
-// Get a free key at https://console.groq.com/keys
-
 const config = require('../config.json');
 
 function buildSystemPrompt() {
-  const productList = config.products
-    .map(p => `- ${p.name} (${p.category}): ${p.price}, ${p.material}, ${p.dimensions}. ${p.desc}`)
+  const productList = (config.products || [])
+    .map(p => `- ${p.name} [Category: ${p.category} | Price: ${p.price} | Material: ${p.material} | Dimensions: ${p.dimensions}]: ${p.desc}`)
     .join('\n');
 
-  return config.system_prompt
-    .replace('{business_name}', config.business_name)
-    .replace('{address}', config.address)
-    .replace('{hours}', config.hours)
-    .replace('{phone}', config.phone)
+  return (config.system_prompt || '')
+    .replace('{business_name}', config.business_name || 'GRAIN Furniture Co.')
+    .replace('{address}', config.address || '')
+    .replace('{hours}', config.hours || '')
+    .replace('{phone}', config.phone || '')
     .replace('{products}', '\n' + productList);
 }
 
 module.exports = async function handler(req, res) {
+  // CORS & Method check
   if (req.method !== 'POST') {
-    res.status(405).json({ error: 'Method not allowed' });
-    return;
+    res.setHeader('Allow', ['POST']);
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const { messages } = req.body || {};
 
   if (!Array.isArray(messages) || messages.length === 0) {
-    res.status(400).json({ error: 'messages array is required' });
-    return;
+    return res.status(400).json({ error: 'Messages array is required' });
   }
 
-  // Keep only the last 10 turns to control cost/context size
-  const trimmed = messages.slice(-10).map(m => ({
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) {
+    console.error('GROQ_API_KEY environment variable is missing.');
+    return res.status(500).json({ error: 'Server misconfiguration: API key missing' });
+  }
+
+  // Sanitize and trim history (keep last 10 turns, limit length to prevent context flooding)
+  const trimmedMessages = messages.slice(-10).map(m => ({
     role: m.role === 'assistant' ? 'assistant' : 'user',
-    content: String(m.content).slice(0, 2000),
+    content: String(m.content || '').trim().slice(0, 1500),
   }));
 
   try {
@@ -51,53 +44,31 @@ module.exports = async function handler(req, res) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+        'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
-        max_tokens: 400,
+        max_tokens: 500,
+        temperature: 0.6,
         messages: [
           { role: 'system', content: buildSystemPrompt() },
-          ...trimmed,
+          ...trimmedMessages,
         ],
       }),
     });
 
     if (!response.ok) {
       const errText = await response.text();
-      console.error('Groq API error:', errText);
-      res.status(502).json({ error: 'Upstream API error' });
-      return;
+      console.error('Groq API upstream error:', response.status, errText);
+      return res.status(502).json({ error: 'Upstream AI service error' });
     }
 
     const data = await response.json();
-    const reply = data.choices[0].message.content;
+    const reply = data.choices?.[0]?.message?.content || "I'm sorry, I couldn't process that request right now.";
 
-    res.status(200).json({ reply });
+    return res.status(200).json({ reply });
   } catch (err) {
-    console.error('Handler error:', err);
-    res.status(500).json({ error: 'Something went wrong' });
+    console.error('API Chat Handler error:', err);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 };
-
-/* ---- To switch to Claude later, replace the try block above with: ----
-
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 400,
-        system: buildSystemPrompt(),
-        messages: trimmed,
-      }),
-    });
-    const data = await response.json();
-    const reply = data.content.filter(b => b.type === 'text').map(b => b.text).join('\n');
-
-   Then set ANTHROPIC_API_KEY instead of GROQ_API_KEY in Vercel's environment variables.
---------------------------------------------------------------------- */
