@@ -12,10 +12,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Render Products Dynamically & Setup Filters
+  // 1. Render Featured Products on Index Page (First 3 items)
+  const featuredGrid = document.querySelector('#featured-grid');
+  if (featuredGrid && window.GRAIN_PRODUCTS) {
+    const featuredItems = window.GRAIN_PRODUCTS.slice(0, 3);
+    renderProductCards(featuredItems, '#featured-grid');
+  }
+
+  // 2. Render Full Product Collection & Filters on Products Page
   const productGrid = document.querySelector('#product-grid');
   if (productGrid && window.GRAIN_PRODUCTS) {
-    renderProducts(window.GRAIN_PRODUCTS);
+    renderProductCards(window.GRAIN_PRODUCTS, '#product-grid');
 
     const filterButtons = document.querySelectorAll('.filter-btn');
     filterButtons.forEach(btn => {
@@ -25,10 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const category = btn.getAttribute('data-filter');
         
         if (category === 'All') {
-          renderProducts(window.GRAIN_PRODUCTS);
+          renderProductCards(window.GRAIN_PRODUCTS, '#product-grid');
         } else {
           const filtered = window.GRAIN_PRODUCTS.filter(p => p.category === category);
-          renderProducts(filtered);
+          renderProductCards(filtered, '#product-grid');
         }
       });
     });
@@ -93,12 +100,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Helper function to build cards and inject WhatsApp context bridge (fixed typo here)
-function renderProducts(products) {
-  const productGrid = document.querySelector('#product-grid');
-  if (!productGrid) return;
+// Reusable card renderer with WhatsApp context links
+function renderProductCards(products, selector) {
+  const container = document.querySelector(selector);
+  if (!container) return;
 
-  productGrid.innerHTML = products.map(product => {
+  container.innerHTML = products.map(product => {
     const waText = encodeURIComponent(`Hi GRAIN, I'm interested in the ${product.name} (${product.price}). Is it available to view or customize?`);
     const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`;
 
