@@ -1,6 +1,6 @@
 // GRAIN Furniture Co. — shared site behavior
 // Update these two constants when reusing this template for a new client
-const WHATSAPP_NUMBER = '601140294053'; // digits only, country code, no + or spaces
+const WHATSAPP_NUMBER = '60123456789'; // digits only, country code, no + or spaces
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID'; // from formspree.io
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -40,12 +40,19 @@ document.addEventListener('DOMContentLoaded', () => {
       };
 
       try {
-        const res = await fetch(FORMSPREE_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        if (res.ok) {
+        const [formRes] = await Promise.allSettled([
+          fetch(FORMSPREE_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify(payload),
+          }),
+          fetch('/api/notify-whatsapp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: payload.name, email: payload.email, note: `Contact form: ${payload.message}` }),
+          }),
+        ]);
+        if (formRes.status === 'fulfilled' && formRes.value.ok) {
           btn.textContent = "Sent — we'll reply within a day";
           form.reset();
         } else {
