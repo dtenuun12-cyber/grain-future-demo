@@ -1,10 +1,9 @@
 // GRAIN Furniture Co. — shared site behavior
-// Update these two constants when reusing this template for a new client
-const WHATSAPP_NUMBER = '60123456789'; // digits only, country code, no + or spaces
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID'; // from formspree.io
+const WHATSAPP_NUMBER = '601140294053'; // Malaysian number
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // ---- Mobile nav toggle ----
+  // Mobile Nav Toggle
   const toggle = document.querySelector('.nav-toggle');
   const links = document.querySelector('.nav-links');
   if (toggle && links) {
@@ -13,7 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ---- Floating WhatsApp button (every page) ----
+  // Floating Action Container (WhatsApp + Chatbot toggle)
+  const floatContainer = document.createElement('div');
+  floatContainer.className = 'floating-actions';
+
   const wa = document.createElement('a');
   wa.id = 'grain-whatsapp-btn';
   wa.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi! I'm interested in a piece from GRAIN Furniture Co.")}`;
@@ -21,15 +23,17 @@ document.addEventListener('DOMContentLoaded', () => {
   wa.rel = 'noopener';
   wa.setAttribute('aria-label', 'Chat on WhatsApp');
   wa.innerHTML = '&#128241;';
-  document.body.appendChild(wa);
 
-  // ---- Contact form -> real submission via Formspree ----
+  floatContainer.appendChild(wa);
+  document.body.appendChild(floatContainer);
+
+  // Contact form handler
   const form = document.querySelector('#contact-form');
   if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = form.querySelector('button');
-      const original = btn.textContent;
+      const originalText = btn.textContent;
       btn.disabled = true;
       btn.textContent = 'Sending...';
 
@@ -56,17 +60,16 @@ document.addEventListener('DOMContentLoaded', () => {
           btn.textContent = "Sent — we'll reply within a day";
           form.reset();
         } else {
-          btn.textContent = 'Something went wrong — please WhatsApp us instead';
+          btn.textContent = 'Something went wrong — please WhatsApp us';
         }
       } catch (err) {
-        console.error('Form submit error:', err);
-        btn.textContent = 'Something went wrong — please WhatsApp us instead';
+        console.error('Form error:', err);
+        btn.textContent = 'Something went wrong — please WhatsApp us';
       } finally {
-        setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 4000);
+        setTimeout(() => { btn.textContent = originalText; btn.disabled = false; }, 4000);
       }
     });
   }
 });
 
-// Helper other scripts (chatbot.js) can reuse
 window.GRAIN_FORMSPREE_ENDPOINT = FORMSPREE_ENDPOINT;
