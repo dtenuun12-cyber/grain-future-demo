@@ -1,6 +1,6 @@
 // GRAIN Furniture Co. — shared site behavior
 // Update these two constants when reusing this template for a new client
-const WHATSAPP_NUMBER = '60123456789'; // digits only, country code, no + or spaces
+const WHATSAPP_NUMBER = '601140294053'; // digits only, country code, no + or spaces
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID'; // from formspree.io
 
 document.addEventListener('DOMContentLoaded', () => {
