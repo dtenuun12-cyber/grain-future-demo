@@ -12,12 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Render Products Dynamically (if #product-grid exists on the page)
+  // Render Products Dynamically & Setup Filters
   const productGrid = document.querySelector('#product-grid');
   if (productGrid && window.GRAIN_PRODUCTS) {
     renderProducts(window.GRAIN_PRODUCTS);
 
-    // Setup Filter Buttons
     const filterButtons = document.querySelectorAll('.filter-btn');
     filterButtons.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -52,19 +51,13 @@ document.addEventListener('DOMContentLoaded', () => {
       };
 
       try {
-        const [formRes] = await Promise.allSettled([
-          fetch(FORMSPREE_ENDPOINT, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-            body: JSON.stringify(payload),
-          }),
-          fetch('/api/notify-whatsapp', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: payload.name, email: payload.email, note: `Contact form: ${payload.message}` }),
-          }),
-        ]);
-        if (formRes.status === 'fulfilled' && formRes.value.ok) {
+        const response = await fetch(FORMSPREE_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        
+        if (response.ok) {
           btn.textContent = "Sent — we'll reply within a day";
           form.reset();
         } else {
@@ -100,13 +93,13 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Helper function to build cards and inject WhatsApp context bridge
+// Helper function to build cards and inject WhatsApp context bridge (fixed typo here)
 function renderProducts(products) {
   const productGrid = document.querySelector('#product-grid');
   if (!productGrid) return;
 
   productGrid.innerHTML = products.map(product => {
-    const waText = encodeURIComponent(`Hi GRAIN, I'm interested in the ${productname} (${productprice}). Is it available to view or customize?`);
+    const waText = encodeURIComponent(`Hi GRAIN, I'm interested in the ${product.name} (${product.price}). Is it available to view or customize?`);
     const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`;
 
     return `
@@ -125,6 +118,5 @@ function renderProducts(products) {
   }).join('');
 }
 
-// Global variable bindings
 window.GRAIN_FORMSPREE_ENDPOINT = FORMSPREE_ENDPOINT;
 window.WHATSAPP_NUMBER = WHATSAPP_NUMBER;
