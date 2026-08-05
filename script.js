@@ -3,7 +3,7 @@ const WHATSAPP_NUMBER = '601140294053';
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // ---- Mobile Nav Toggle ----
+  // Mobile Nav Toggle
   const toggle = document.querySelector('.nav-toggle');
   const links = document.querySelector('.nav-links');
   if (toggle && links) {
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ---- Contact Form Submission ----
+  // Contact Form Submission
   const form = document.querySelector('#contact-form');
   if (form) {
     form.addEventListener('submit', async (e) => {
