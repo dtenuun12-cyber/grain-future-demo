@@ -608,3 +608,25 @@ footer {
     bottom: 80px; 
   }
 }
+/* ---------- Filter Buttons ---------- */
+.filter-btn {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+  border-color: var(--ink);
+}
+
+.filter-btn.active {
+  background: var(--ink);
+  color: #FAF8F5;
+  border-color: var(--ink);
+}
