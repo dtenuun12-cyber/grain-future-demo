@@ -63,12 +63,24 @@
       btn.disabled = true;
       try {
         const endpoint = window.GRAIN_FORMSPREE_ENDPOINT;
-        await fetch(endpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({ name, phone, source: 'Chatbot callback request' }),
-        });
-        el.innerHTML = `<div>Thanks, ${name} — the team will reach out shortly.</div>`;
+        const results = await Promise.allSettled([
+          fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({ name, phone, source: 'Chatbot callback request' }),
+          }),
+          fetch('/api/notify-whatsapp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, phone, note: 'Requested a callback via chatbot' }),
+          }),
+        ]);
+        const anySucceeded = results.some(r => r.status === 'fulfilled' && r.value.ok);
+        if (anySucceeded) {
+          el.innerHTML = `<div>Thanks, ${name} — the team will reach out shortly.</div>`;
+        } else {
+          el.innerHTML = `<div>Something went wrong. Please use the WhatsApp button instead.</div>`;
+        }
       } catch (err) {
         el.innerHTML = `<div>Something went wrong. Please use the WhatsApp button instead.</div>`;
         console.error('Lead form error:', err);
