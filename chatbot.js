@@ -2,147 +2,175 @@
 (function () {
   const BUSINESS_NAME = 'GRAIN Furniture Co.';
   const WELCOME_MESSAGE = "Hi, I'm the GRAIN assistant. Ask me about any piece, dimensions, materials, or custom arrangements.";
+  // Removed the duplicate WHATSAPP_NUMBER declaration to prevent crashes
 
-  const floatContainer = document.querySelector('.floating-actions') || document.body;
+  function initChatbot() {
+    // 1. Ensure floating action wrapper exists
+    let floatContainer = document.querySelector('.floating-actions');
+    if (!floatContainer) {
+      floatContainer = document.createElement('div');
+      floatContainer.className = 'floating-actions';
+      document.body.appendChild(floatContainer);
+    }
 
-  const launcher = document.createElement('button');
-  launcher.id = 'grain-chat-launcher';
-  launcher.setAttribute('aria-label', 'Open chat');
-  launcher.innerHTML = '&#128172;';
+    // 2. Render WhatsApp Button using the global WHATSAPP_NUMBER from script.js
+    if (!document.getElementById('grain-whatsapp-btn')) {
+      const wa = document.createElement('a');
+      wa.id = 'grain-whatsapp-btn';
+      wa.href = `https://wa.me/${window.WHATSAPP_NUMBER || '601140294053'}?text=${encodeURIComponent("Hi! I'm interested in a piece from GRAIN Furniture Co.")}`;
+      wa.target = '_blank';
+      wa.rel = 'noopener';
+      wa.setAttribute('aria-label', 'Chat on WhatsApp');
+      wa.innerHTML = '&#128241;';
+      floatContainer.appendChild(wa);
+    }
 
-  const panel = document.createElement('div');
-  panel.id = 'grain-chat-panel';
-  panel.innerHTML = `
-    <div class="gc-header">
-      <div>
-        <div class="gc-header-title">${BUSINESS_NAME}</div>
-        <div class="gc-header-sub"><span class="gc-status-dot"></span> Online · Replies instantly</div>
+    // 3. Render Chat Launcher
+    const launcher = document.createElement('button');
+    launcher.id = 'grain-chat-launcher';
+    launcher.setAttribute('aria-label', 'Open chat');
+    launcher.innerHTML = '&#128172;';
+    floatContainer.appendChild(launcher);
+
+    // 4. Render Chat Panel
+    const panel = document.createElement('div');
+    panel.id = 'grain-chat-panel';
+    panel.innerHTML = `
+      <div class="gc-header">
+        <div>
+          <div class="gc-header-title">${BUSINESS_NAME}</div>
+          <div class="gc-header-sub"><span class="gc-status-dot"></span> Online · Replies instantly</div>
+        </div>
+        <button class="gc-close" aria-label="Close chat">&times;</button>
       </div>
-      <button class="gc-close" aria-label="Close chat">&times;</button>
-    </div>
-    <div class="gc-body" id="gc-body"></div>
-    <div class="gc-lead-bar">
-      <button id="gc-lead-toggle" class="gc-lead-link">Request a callback &rarr;</button>
-    </div>
-    <div class="gc-input-row">
-      <input type="text" id="gc-input" placeholder="Ask about a product..." autocomplete="off">
-      <button class="gc-send" id="gc-send">Send</button>
-    </div>
-  `;
-
-  floatContainer.appendChild(launcher);
-  document.body.appendChild(panel);
-
-  const body = panel.querySelector('#gc-body');
-  const input = panel.querySelector('#gc-input');
-  const sendBtn = panel.querySelector('#gc-send');
-  const closeBtn = panel.querySelector('.gc-close');
-  const leadToggle = panel.querySelector('#gc-lead-toggle');
-
-  function showLeadForm() {
-    if (panel.querySelector('.gc-lead-form')) return;
-    const el = document.createElement('div');
-    el.className = 'gc-msg bot gc-lead-form';
-    el.innerHTML = `
-      <div style="margin-bottom:8px;">Leave your name and number — our team will call or WhatsApp you back.</div>
-      <input type="text" class="gc-lead-name" placeholder="Your name" style="width:100%;margin-bottom:6px;padding:8px;border:1px solid var(--line);border-radius:4px;font-size:13px;">
-      <input type="tel" class="gc-lead-phone" placeholder="Phone number" style="width:100%;margin-bottom:8px;padding:8px;border:1px solid var(--line);border-radius:4px;font-size:13px;">
-      <button class="gc-lead-submit" style="width:100%;background:var(--ink);color:var(--surface);border:none;border-radius:4px;padding:9px;font-size:13px;cursor:pointer;font-weight:500;">Send my info</button>
+      <div class="gc-body" id="gc-body"></div>
+      <div class="gc-lead-bar">
+        <button id="gc-lead-toggle" class="gc-lead-link">Request a callback &rarr;</button>
+      </div>
+      <div class="gc-input-row">
+        <input type="text" id="gc-input" placeholder="Ask about a product..." autocomplete="off">
+        <button class="gc-send" id="gc-send">Send</button>
+      </div>
     `;
-    body.appendChild(el);
-    body.scrollTop = body.scrollHeight;
+    document.body.appendChild(panel);
 
-    el.querySelector('.gc-lead-submit').addEventListener('click', async () => {
-      const name = el.querySelector('.gc-lead-name').value.trim();
-      const phone = el.querySelector('.gc-lead-phone').value.trim();
-      if (!name || !phone) return;
-      const btn = el.querySelector('.gc-lead-submit');
-      btn.textContent = 'Sending...';
-      btn.disabled = true;
-      try {
-        const endpoint = window.GRAIN_FORMSPREE_ENDPOINT;
-        await Promise.allSettled([
-          fetch(endpoint, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-            body: JSON.stringify({ name, phone, source: 'Chatbot callback request' }),
-          }),
-          fetch('/api/notify-whatsapp', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, phone, note: 'Requested a callback via chatbot' }),
-          }),
-        ]);
-        el.innerHTML = `<div>Thanks, ${name} — the team will reach out shortly.</div>`;
-      } catch (err) {
-        el.innerHTML = `<div>Something went wrong. Please use the WhatsApp button directly.</div>`;
+    const body = panel.querySelector('#gc-body');
+    const input = panel.querySelector('#gc-input');
+    const sendBtn = panel.querySelector('#gc-send');
+    const closeBtn = panel.querySelector('.gc-close');
+    const leadToggle = panel.querySelector('#gc-lead-toggle');
+
+    function showLeadForm() {
+      if (panel.querySelector('.gc-lead-form')) return;
+      const el = document.createElement('div');
+      el.className = 'gc-msg bot gc-lead-form';
+      el.innerHTML = `
+        <div style="margin-bottom:8px;">Leave your name and number — our team will call or WhatsApp you back.</div>
+        <input type="text" class="gc-lead-name" placeholder="Your name" style="width:100%;margin-bottom:6px;padding:8px;border:1px solid var(--line);border-radius:4px;font-size:13px;">
+        <input type="tel" class="gc-lead-phone" placeholder="Phone number" style="width:100%;margin-bottom:8px;padding:8px;border:1px solid var(--line);border-radius:4px;font-size:13px;">
+        <button class="gc-lead-submit" style="width:100%;background:var(--ink);color:var(--surface);border:none;border-radius:4px;padding:9px;font-size:13px;cursor:pointer;font-weight:500;">Send my info</button>
+      `;
+      body.appendChild(el);
+      body.scrollTop = body.scrollHeight;
+
+      el.querySelector('.gc-lead-submit').addEventListener('click', async () => {
+        const name = el.querySelector('.gc-lead-name').value.trim();
+        const phone = el.querySelector('.gc-lead-phone').value.trim();
+        if (!name || !phone) return;
+        const btn = el.querySelector('.gc-lead-submit');
+        btn.textContent = 'Sending...';
+        btn.disabled = true;
+        try {
+          const endpoint = window.GRAIN_FORMSPREE_ENDPOINT;
+          await Promise.allSettled([
+            fetch(endpoint, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+              body: JSON.stringify({ name, phone, source: 'Chatbot callback request' }),
+            }),
+            fetch('/api/notify-whatsapp', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ name, phone, note: 'Requested a callback via chatbot' }),
+            }),
+          ]);
+          el.innerHTML = `<div>Thanks, ${name} — the team will reach out shortly.</div>`;
+        } catch (err) {
+          el.innerHTML = `<div>Something went wrong. Please use the WhatsApp button directly.</div>`;
+        }
+      });
+    }
+
+    leadToggle.addEventListener('click', showLeadForm);
+
+    let history = [];
+    let opened = false;
+
+    function addMessage(role, text) {
+      const el = document.createElement('div');
+      el.className = 'gc-msg ' + (role === 'user' ? 'user' : 'bot');
+      el.textContent = text;
+      body.appendChild(el);
+      body.scrollTop = body.scrollHeight;
+      return el;
+    }
+
+    function openPanel() {
+      panel.classList.add('open');
+      if (!opened) {
+        addMessage('bot', WELCOME_MESSAGE);
+        opened = true;
       }
+      input.focus();
+    }
+
+    launcher.addEventListener('click', openPanel);
+    closeBtn.addEventListener('click', () => panel.classList.remove('open'));
+
+    async function sendMessage() {
+      const text = input.value.trim();
+      if (!text) return;
+      addMessage('user', text);
+      history.push({ role: 'user', content: text });
+      input.value = '';
+      sendBtn.disabled = true;
+
+      const typingEl = document.createElement('div');
+      typingEl.className = 'gc-msg bot';
+      typingEl.textContent = 'Thinking...';
+      body.appendChild(typingEl);
+      body.scrollTop = body.scrollHeight;
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: history }),
+        });
+
+        if (!res.ok) throw new Error('Request failed');
+
+        const data = await res.json();
+        typingEl.remove();
+        addMessage('bot', data.reply);
+        history.push({ role: 'assistant', content: data.reply });
+      } catch (err) {
+        typingEl.remove();
+        addMessage('bot', "Sorry, I'm having trouble connecting right now. Please call or WhatsApp us.");
+      } finally {
+        sendBtn.disabled = false;
+      }
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') sendMessage();
     });
   }
 
-  leadToggle.addEventListener('click', showLeadForm);
-
-  let history = [];
-  let opened = false;
-
-  function addMessage(role, text) {
-    const el = document.createElement('div');
-    el.className = 'gc-msg ' + (role === 'user' ? 'user' : 'bot');
-    el.textContent = text;
-    body.appendChild(el);
-    body.scrollTop = body.scrollHeight;
-    return el;
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initChatbot);
+  } else {
+    initChatbot();
   }
-
-  function openPanel() {
-    panel.classList.add('open');
-    if (!opened) {
-      addMessage('bot', WELCOME_MESSAGE);
-      opened = true;
-    }
-    input.focus();
-  }
-
-  launcher.addEventListener('click', openPanel);
-  closeBtn.addEventListener('click', () => panel.classList.remove('open'));
-
-  async function sendMessage() {
-    const text = input.value.trim();
-    if (!text) return;
-    addMessage('user', text);
-    history.push({ role: 'user', content: text });
-    input.value = '';
-    sendBtn.disabled = true;
-
-    const typingEl = document.createElement('div');
-    typingEl.className = 'gc-msg bot';
-    typingEl.textContent = 'Thinking...';
-    body.appendChild(typingEl);
-    body.scrollTop = body.scrollHeight;
-
-    try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: history }),
-      });
-
-      if (!res.ok) throw new Error('Request failed');
-
-      const data = await res.json();
-      typingEl.remove();
-      addMessage('bot', data.reply);
-      history.push({ role: 'assistant', content: data.reply });
-    } catch (err) {
-      typingEl.remove();
-      addMessage('bot', "Sorry, I'm having trouble connecting right now. Please call or WhatsApp us.");
-    } finally {
-      sendBtn.disabled = false;
-    }
-  }
-
-  sendBtn.addEventListener('click', sendMessage);
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') sendMessage();
-  });
 })();
