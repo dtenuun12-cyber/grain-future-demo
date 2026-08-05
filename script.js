@@ -3,7 +3,7 @@ const WHATSAPP_NUMBER = '601140294053';
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // ---- Mobile Nav Toggle ----
+  // Mobile Nav Toggle
   const toggle = document.querySelector('.nav-toggle');
   const links = document.querySelector('.nav-links');
   if (toggle && links) {
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ---- Contact Form Submission ----
+  // Contact Form Submission Logic
   const form = document.querySelector('#contact-form');
   if (form) {
     form.addEventListener('submit', async (e) => {
@@ -55,6 +55,29 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // Scroll Reveal Animations Observer
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.15 
+  };
+
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+        observer.unobserve(entry.target); 
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.reveal').forEach(element => {
+    observer.observe(element);
+  });
 });
 
+// Expose Formspree endpoint globally for chatbot.js to use
 window.GRAIN_FORMSPREE_ENDPOINT = FORMSPREE_ENDPOINT;
+// Expose WhatsApp number globally for chatbot.js to use
+window.WHATSAPP_NUMBER = WHATSAPP_NUMBER;
