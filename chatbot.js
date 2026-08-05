@@ -2,7 +2,7 @@
 (function () {
   const BUSINESS_NAME = 'GRAIN Furniture Co.';
   const WELCOME_MESSAGE = "Hi, I'm the GRAIN assistant. Ask me about any piece, dimensions, materials, or custom arrangements.";
-  // Removed the duplicate WHATSAPP_NUMBER declaration to prevent crashes
+  const WHATSAPP_NUMBER = '601140294053';
 
   function initChatbot() {
     // 1. Ensure floating action wrapper exists
@@ -13,11 +13,11 @@
       document.body.appendChild(floatContainer);
     }
 
-    // 2. Render WhatsApp Button using the global WHATSAPP_NUMBER from script.js
+    // 2. Render WhatsApp Button if not already on page
     if (!document.getElementById('grain-whatsapp-btn')) {
       const wa = document.createElement('a');
       wa.id = 'grain-whatsapp-btn';
-      wa.href = `https://wa.me/${window.WHATSAPP_NUMBER || '601140294053'}?text=${encodeURIComponent("Hi! I'm interested in a piece from GRAIN Furniture Co.")}`;
+      wa.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi! I'm interested in a piece from GRAIN Furniture Co.")}`;
       wa.target = '_blank';
       wa.rel = 'noopener';
       wa.setAttribute('aria-label', 'Chat on WhatsApp');
