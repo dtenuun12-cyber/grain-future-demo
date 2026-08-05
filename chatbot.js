@@ -23,6 +23,9 @@
       <button class="gc-close" aria-label="Close chat">&times;</button>
     </div>
     <div class="gc-body" id="gc-body"></div>
+    <div class="gc-lead-bar">
+      <button id="gc-lead-toggle" class="gc-lead-link">Request a callback &rarr;</button>
+    </div>
     <div class="gc-input-row">
       <input type="text" id="gc-input" placeholder="Ask about a product..." autocomplete="off">
       <button class="gc-send" id="gc-send">Send</button>
@@ -36,6 +39,45 @@
   const input = panel.querySelector('#gc-input');
   const sendBtn = panel.querySelector('#gc-send');
   const closeBtn = panel.querySelector('.gc-close');
+  const leadToggle = panel.querySelector('#gc-lead-toggle');
+
+  function showLeadForm() {
+    if (panel.querySelector('.gc-lead-form')) return; // already showing
+    const el = document.createElement('div');
+    el.className = 'gc-msg bot gc-lead-form';
+    el.innerHTML = `
+      <div style="margin-bottom:8px;">Leave your name and number — the team will call or WhatsApp you back.</div>
+      <input type="text" class="gc-lead-name" placeholder="Your name" style="width:100%;margin-bottom:6px;padding:8px;border:1px solid var(--line);border-radius:4px;font-size:13px;">
+      <input type="tel" class="gc-lead-phone" placeholder="Phone number" style="width:100%;margin-bottom:8px;padding:8px;border:1px solid var(--line);border-radius:4px;font-size:13px;">
+      <button class="gc-lead-submit" style="width:100%;background:var(--ink);color:var(--surface);border:none;border-radius:4px;padding:9px;font-size:13px;cursor:pointer;">Send my info</button>
+    `;
+    body.appendChild(el);
+    body.scrollTop = body.scrollHeight;
+
+    el.querySelector('.gc-lead-submit').addEventListener('click', async () => {
+      const name = el.querySelector('.gc-lead-name').value.trim();
+      const phone = el.querySelector('.gc-lead-phone').value.trim();
+      if (!name || !phone) return;
+      const btn = el.querySelector('.gc-lead-submit');
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+      try {
+        const endpoint = window.GRAIN_FORMSPREE_ENDPOINT;
+        await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ name, phone, source: 'Chatbot callback request' }),
+        });
+        el.innerHTML = `<div>Thanks, ${name} — the team will reach out shortly.</div>`;
+      } catch (err) {
+        el.innerHTML = `<div>Something went wrong. Please use the WhatsApp button instead.</div>`;
+        console.error('Lead form error:', err);
+      }
+    });
+  }
+
+  leadToggle.addEventListener('click', showLeadForm);
+
 
   let history = []; // { role: 'user' | 'assistant', content: string }
   let opened = false;
