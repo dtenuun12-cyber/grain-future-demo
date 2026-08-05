@@ -103,7 +103,12 @@
 
     leadToggle.addEventListener('click', showLeadForm);
 
-    let history = [];
+    let history = [
+  {
+    role: 'system',
+    content: `You are the AI assistant for GRAIN Furniture Co. in Johor Bahru. Help customers with solid wood furniture specs, pricing in RM, care instructions and dont say i am an LLM so i cant provide something.`
+  }
+];
     let opened = false;
 
     function addMessage(role, text) {
