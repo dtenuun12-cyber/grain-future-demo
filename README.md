@@ -105,6 +105,30 @@ button inside the chatbot will email the store owner directly whenever
 someone leaves their details. Formspree's free tier covers 50
 submissions/month — plenty for a small store getting started.
 
+## Step 6 — Get leads sent straight to the owner's WhatsApp (free)
+
+This uses a free tool called **CallMeBot**. Once set up, both the "Request
+a callback" button in the chatbot and the contact form will send a message
+directly to the owner's phone — no email-checking required.
+
+**Setup (the store owner does this once, takes 2 minutes):**
+1. Save this contact on WhatsApp: `+34 644 59 71 67`
+2. Send it the message: `I allow callmebot to send me messages`
+3. Wait for a reply with an API key (something like "API Activated... APIKEY is 123456")
+4. Give you that number — it goes in Vercel as an environment variable:
+   - Name: `CALLMEBOT_APIKEY`
+   - Value: (the key from step 3)
+5. In Vercel: Settings → Environment Variables → add it → redeploy
+
+That's it — no code changes needed, `config.json`'s `whatsapp_number` is
+already what the messages get sent to.
+
+**Worth knowing:** CallMeBot is a free community tool meant for personal/small
+use, not built for high message volume — perfectly fine for a store getting
+a handful of leads a day. If this ever needs to be bulletproof for a busier
+business, the professional (paid) upgrade path is WhatsApp's official
+Business API via Twilio or Meta.
+
 ## Reusing this for client #2, #3...
 
 Copy this whole folder, create a new GitHub repo, repeat Steps 2–5 with their
