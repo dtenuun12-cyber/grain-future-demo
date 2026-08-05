@@ -19,77 +19,27 @@
   </ul>
 </nav>
 
-<header class="hero reveal active" style="padding-bottom: 48px;">
+<header class="hero reveal active" style="padding-bottom: 32px;">
   <div class="hero-eyebrow">Full collection</div>
   <h1 style="font-size: clamp(34px, 5vw, 56px);">Every piece we currently make.</h1>
-  <p class="hero-sub">Dimensions and materials are listed on each card. If you need something sized differently, the assistant can flag it for our workshop.</p>
+  <p class="hero-sub">Dimensions and materials are listed on each card. Click any piece to chat instantly with our workshop via WhatsApp.</p>
 </header>
+
+<!-- Filter Navigation Bar -->
+<div class="wrap" style="margin-bottom: 32px;">
+  <div class="filter-bar" style="display: flex; gap: 12px; flex-wrap: wrap;">
+    <button class="filter-btn active" data-filter="All">All pieces</button>
+    <button class="filter-btn" data-filter="Dining">Dining</button>
+    <button class="filter-btn" data-filter="Living">Living</button>
+    <button class="filter-btn" data-filter="Bedroom">Bedroom</button>
+    <button class="filter-btn" data-filter="Storage">Storage</button>
+  </div>
+</div>
 
 <section class="reveal" style="padding-top: 0;">
   <div class="wrap">
-    <div class="grid">
-
-      <div class="card reveal">
-        <div class="card-media"><img src="https://images.unsplash.com/photo-1577140917170-285929fb55b7?auto=format&fit=crop&w=800&q=80" alt="Amara Dining Table"></div>
-        <span class="card-cat">Dining</span>
-        <h3>Amara Dining Table</h3>
-        <p class="desc">Seats six. Built from a single grain run so the top ages as one piece, not a patchwork.</p>
-        <div class="card-specs"><span>Solid oak, hand-oiled finish</span><span>180 x 90 x 75 cm</span></div>
-        <div class="card-price">RM 2,450</div>
-        <button class="card-ask" onclick="document.getElementById('grain-chat-launcher').click()">Ask about this piece &rarr;</button>
-      </div>
-
-      <div class="card reveal">
-        <div class="card-media"><img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=800&q=80" alt="Solen Lounge Chair"></div>
-        <span class="card-cat">Living</span>
-        <h3>Solen Lounge Chair</h3>
-        <p class="desc">A reading chair with a slight recline, upholstered in a weave that softens with use.</p>
-        <div class="card-specs"><span>Walnut frame, wool upholstery</span><span>72 x 80 x 85 cm</span></div>
-        <div class="card-price">RM 980</div>
-        <button class="card-ask" onclick="document.getElementById('grain-chat-launcher').click()">Ask about this piece &rarr;</button>
-      </div>
-
-      <div class="card reveal">
-        <div class="card-media"><img src="https://images.unsplash.com/photo-1597072689227-8882273e8f6a?auto=format&fit=crop&w=800&q=80" alt="Kessel Storage Bench"></div>
-        <span class="card-cat">Living</span>
-        <h3>Kessel Storage Bench</h3>
-        <p class="desc">Entryway seating with hidden storage underneath. Hinges rated for 20,000+ cycles.</p>
-        <div class="card-specs"><span>Solid ash, brass hardware</span><span>120 x 40 x 45 cm</span></div>
-        <div class="card-price">RM 720</div>
-        <button class="card-ask" onclick="document.getElementById('grain-chat-launcher').click()">Ask about this piece &rarr;</button>
-      </div>
-
-      <div class="card reveal">
-        <div class="card-media"><img src="https://images.unsplash.com/photo-1505693314120-0d443867891c?auto=format&fit=crop&w=800&q=80" alt="Marlow Bed Frame"></div>
-        <span class="card-cat">Bedroom</span>
-        <h3>Marlow Bed Frame</h3>
-        <p class="desc">No slats to replace, no squeaks to chase down. One frame, joined the old way.</p>
-        <div class="card-specs"><span>Solid teak</span><span>Queen, 160 x 200 cm</span></div>
-        <div class="card-price">RM 1,850</div>
-        <button class="card-ask" onclick="document.getElementById('grain-chat-launcher').click()">Ask about this piece &rarr;</button>
-      </div>
-
-      <div class="card reveal">
-        <div class="card-media"><img src="https://images.unsplash.com/photo-1594620302200-9a762244a156?auto=format&fit=crop&w=800&q=80" alt="Fen Bookshelf"></div>
-        <span class="card-cat">Storage</span>
-        <h3>Fen Bookshelf</h3>
-        <p class="desc">Five adjustable shelves rated to hold a genuinely full library, not a decorative one.</p>
-        <div class="card-specs"><span>Solid oak</span><span>90 x 35 x 190 cm</span></div>
-        <div class="card-price">RM 1,150</div>
-        <button class="card-ask" onclick="document.getElementById('grain-chat-launcher').click()">Ask about this piece &rarr;</button>
-      </div>
-
-      <div class="card reveal">
-        <div class="card-media"><img src="https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?auto=format&fit=crop&w=800&q=80" alt="Reyes Coffee Table"></div>
-        <span class="card-cat">Living</span>
-        <h3>Reyes Coffee Table</h3>
-        <p class="desc">Live-edge detail on one side, straight edge on the other. No two are identical.</p>
-        <div class="card-specs"><span>Solid walnut</span><span>110 x 55 x 40 cm</span></div>
-        <div class="card-price">RM 640</div>
-        <button class="card-ask" onclick="document.getElementById('grain-chat-launcher').click()">Ask about this piece &rarr;</button>
-      </div>
-
-    </div>
+    <!-- Dynamic grid container handled by script.js -->
+    <div class="grid" id="product-grid"></div>
   </div>
 </section>
 
@@ -101,6 +51,7 @@
   </div>
 </footer>
 
+<script src="products-data.js"></script>
 <script src="script.js"></script>
 <script src="chatbot.js"></script>
 </body>
